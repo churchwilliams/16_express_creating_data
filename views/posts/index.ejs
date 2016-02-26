@@ -22,6 +22,12 @@
   </head>
   <body>
 
+    <% if (message.success) { %>
+      <div class="alert alert-success" role="alert">
+        <%=message.success%>
+      </div>
+    <% } %>
+
     <nav class="navbar navbar-default" role="navigation">
       <div class="container-fluid">
         

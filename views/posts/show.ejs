@@ -71,7 +71,13 @@
               <li><a href="/posts">Back to Posts</a></li>
               <li><a href="/posts/<%= post.id %>/comments">Comments</a></li>
               <li><a href="/posts/<%= post.id %>/edit">Edit</a></li>
-              <li><a href="" class="text-danger">Delete</a></li>
+              <li>
+                <form role="form" name="deletepost" action="/posts/<%=post.id%>" method="post">
+                  <input type="hidden" name="_method" value="delete">
+                  <a href="#" onclick="document.deletepost.submit(); return false;" class="text-danger">Delete</a>
+                  <noscript><button type="submit" class="btn btn-default text-danger">Delete</button></noscript>
+                </form>
+              </li>
             </ul>
           </nav>
 

@@ -90,7 +90,15 @@ router.put('/:id', function(req, res) {
 });
 
 router.delete('/:id', function(req, res) {
-  res.status(404).send('delete post ' + req.params.id)
+  Post.findByIdAndRemove(req.params.id, function(err) {
+    if (err) {
+      console.log("db save error in DELETE /posts/" + req.params.id + ": " + err);
+      res.render('500');
+    } else {
+      req.flash('success', 'Post deleted');
+      res.redirect('/posts');
+    }
+  });
 });
 
 module.exports = router;
