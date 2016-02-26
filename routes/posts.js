@@ -22,6 +22,7 @@ router.get('/new', function(req, res) {
 });
 
 router.post('/', function(req, res) {
+  console.log(req.body);
   Post.create(req.body, function(err, post) {
     if (err) {
       console.log("db error in POST /posts: " + err);
@@ -62,7 +63,30 @@ router.get('/:id/edit', function(req, res) {
 });
 
 router.put('/:id', function(req, res) {
-  res.status(404).send('update post: ' + req.params.id);
+  Post.findById(req.params.id, function(err, post) {
+    if (err) {
+      console.log("db find error in PUT /posts/" + req.params.id + ": " + err);
+      res.render('500');
+    } else if (!post) {
+      res.render('404');
+    } else {
+      // update properties that can be modified. assumes properties are set in request body
+      console.log(req.body);
+      post.title = req.body.title;
+      post.body = req.body.body;
+
+      post.save(function(err) {
+        if (err) {
+          console.log("db save error in PUT /posts/" + req.params.id + ": " + err);
+          res.render('500');
+        } else {
+          var url = '/posts/'+post.id;
+          req.flash('success', 'Post updated');
+          res.redirect(url);
+        }
+      });
+    }
+  });
 });
 
 router.delete('/:id', function(req, res) {
